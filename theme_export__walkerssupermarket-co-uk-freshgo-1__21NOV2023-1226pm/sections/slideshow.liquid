@@ -1,0 +1,338 @@
+<link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'component-slider.css' | asset_url | stylesheet_tag }}</noscript>
+
+<div class="s-panel" data-section-id="{{ section.id }}">
+    <div class="loader wrloader" {% if section.settings.display_sloader %} style="background: url('{{ section.settings.sloader | img_url: '100x100' }}') 50% 50% no-repeat rgba(255, 255, 255, 1);" {% endif %}></div>
+    <slider-component>
+      <ul class="allslideprt slider row rless" id="Slider-{{ section.id }}-{{ block.id }}">
+          {% if section.blocks.size > 0 %}      
+          {% for block in section.blocks %}
+
+          <li class="slider__slide list-unstyled sliderel col-12 cless" id="Slide-{{ block.id }}-{{ forloop.index }}">
+            <div class="wblbookmain" id="wblbookmain">
+                      {% if block.settings.link != blank %}<a href="{{ block.settings.link }}" title="{{ 'wbcustomlabel.wballtext.shopnow' | t }}">{% endif %}
+              {% if block.settings.image != blank %}
+                  <img loading="lazy" src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}" class="img-fluid mx-auto" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}"/>
+              	{% else %}
+                  <img loading="lazy" class="img-fluid mx-auto" src="https://dummyimage.com/1920x600/f8e0e0">
+              {% endif %}
+              {% if block.settings.link != blank %}</a>{% endif %}
+
+                      {%- for i in (1..5) -%}
+                      {%- assign wblooktop = 'wblooktop_' | append: i -%}{%- assign wblooktop = block.settings[wblooktop] -%}
+                      {%- assign wblookleft = 'wblookleft_' | append: i -%}{%- assign wblookleft = block.settings[wblookleft] -%}
+                      {%- assign wblookpd = 'product_' | append: i -%}{%- assign wblookpd = block.settings[wblookpd] -%}
+                          {%- unless wblookpd == blank -%}
+                          {%- assign wblookpd = all_products[wblookpd] -%}
+                          {%- assign sale_on = false -%}
+                          {%- if wblookpd.selected_or_first_available_variant.compare_at_price > wblookpd.selected_or_first_available_variant.price -%}
+                              {%- assign sale_on = true -%}
+                          {%- endif -%}
+                              <div class="wblookbook" style="top: {{ wblooktop }}%; left: {{ wblookleft }}%;">
+                                  <div class="wblookbtn">
+                                      {%- if wblookpd.available -%}
+                                              
+                                              <form action="/cart/add" method="post" enctype="multipart/form-data">
+                                                  <input type="hidden" name="id" value="{{ wblookpd.selected_or_first_available_variant.id }}">
+                                                  <button class="btn wblkbtn" title='{{ 'products.product.add_to_cart' | t }}'>{% render 'icon-hcart' %}</button>
+                                              </form>
+                                          
+                                          {%- else -%} 
+                                              <a href="{{ wblookpd.url }}" class="btn disable wblkbtn">{% render 'icon-hcart' %}</a>
+                                      {%- endif -%}
+                                  </div>
+                                  <div class="wblbookcnt">
+                                      {%comment%}<div class="wblookimg">
+                                      <a href="{{ wblookpd.url }}">
+                                          <img src="{{ wblookpd.featured_image.src | product_img_url: '100x' }}" alt="{{ wblookpd.featured_image.alt }}" class="img-fluid mx-auto">
+                                      </a>
+                                      </div>{%endcomment%}
+                                      {% if display_product_type %}
+                                          <p class="wbprotype">{{ wblookpd.type }}</p>
+                                      {% endif %}
+                                      <div class="wblookdesc">
+                                          <h3><a href="{{ wblookpd.url }}">{{ wblookpd.title }}</a></h3>
+                                          {%- if sale_on and wblookpd.variants.size == 1 -%}
+                                              <div class="wblookprice"><span class="new-price">{{ wblookpd.selected_or_first_available_variant.price | money }}</span><span class="old-price">{{ wblookpd.selected_or_first_available_variant.compare_at_price | money }}</span></div>
+                                          {%- else -%}
+                                              <div class="wblookprice"><span class="new-price">{% if wblookpd.price_min != wblookpd.price_max %}{{ wblookpd.price_min | money_without_trailing_zeros }} - {{ wblookpd.price_max | money_without_trailing_zeros }}{% else %}{{ wblookpd.selected_or_first_available_variant.price | money }}{% endif %}</span><span class="old-price hide"></span></div>
+                                          {%- endif -%}
+
+                                          
+                                      </div>
+
+                                  </div>
+                              </div>
+                          {%- endunless -%}
+                      {%- endfor -%}
+                  </div>
+
+
+                 
+              <div class="slidertext">
+                  <div class="slideff">
+                      {% if block.settings.image1 != blank %}
+                          <img loading="lazy" src="{{ block.settings.image1 | img_url: 'master' }}" alt="{{ block.settings.image1.alt }}" class="img-fluid" width="{{ block.settings.image1.width }}" height="{{ block.settings.image1.height }}"/>
+                      {% endif %}
+                      {% if block.settings.subtitle != blank %}
+                          <h3>{{ block.settings.subtitle }}</h3>
+                      {% endif %}
+                      {% if block.settings.storytitle != blank %}
+                          <h2>{{ block.settings.storytitle }}</h2>
+                      {% endif %}
+                      {% if block.settings.storysubtitle != blank %}
+                          <p>{{ block.settings.storysubtitle }}</p>
+                      {% endif %}
+                      {% if block.settings.linkurl != blank %}
+                          <a href="{{ block.settings.linkurl }}" class="btn btn-primary">{{ 'wbcustomlabel.wballtext.shopnow' | t }}
+                          {% render 'icon-arrow' %}</a>
+                      {% endif %}
+                  </div>
+              </div>
+          </li>
+           {% endfor %}
+      {% endif %}
+      </ul>
+    <div class="sliderbtn text-center {% if article.media.size < 5 %}hidden{% endif %}">
+        <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="{{ 'general.slider.previous_slide' | t }}" data-step="1">{% render 'icon-caret' %}</button>
+        <button type="button" class="slider-button slider-button--next" name="next" aria-label="{{ 'general.slider.next_slide' | t }}" data-step="1">{% render 'icon-caret' %}</button>
+    </div>
+    </slider-component>
+</div>
+
+
+
+
+
+{% schema %}
+{
+"name": "Slideshow",
+"class": "index-section",
+"settings": [
+  {
+    "type": "checkbox",
+    "id": "display_sloader",
+    "label": "Show Slider Loader",
+    "default": true
+  },
+  {
+    "type": "image_picker",
+    "id": "sloader",
+    "label": "Slider Loader"
+  }
+],
+ "blocks": [
+    {
+      "type": "Image",
+      "name": "Slideshow",
+      "settings": [
+        {
+            "type": "image_picker",
+            "id": "image1",
+            "label": "Image",
+            "info": "Size: 46x44"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Sub Heading",
+          "default": "Organic store"
+        },
+        {
+          "type": "text",
+          "id": "storytitle",
+          "label": "Heading",
+          "default": "Organic fresh fruits for your health"
+        },
+        {
+          "type": "text",
+          "id": "storysubtitle",
+          "label": "Description",
+          "default": "Interdum et malesuada fames ac ante ipsum primis in faucibus. Mauris eleifend sagittis mollis. Nulla finibus arcu eu tortor gravida aliquet"
+        },
+        {
+          "type": "url",
+          "id": "linkurl",
+          "label": "Link URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Size: 1920x636"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL"
+        },
+        {
+          "type": "header",
+          "content": "Look Book"
+        },
+        {
+          "type": "header",
+          "content": "Product 1"
+        },
+        {
+          "type": "range",
+          "id": "wblooktop_1",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Position top",
+          "default": 30
+        },
+        {
+          "type": "range",
+          "id": "wblookleft_1",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Position left",
+          "default": 50
+        },
+        {
+          "type": "product",
+          "id": "product_1",
+          "label": "Select product"
+        },
+
+        {
+          "type": "header",
+          "content": "Product 2"
+        },
+        {
+          "type": "range",
+          "id": "wblooktop_2",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Position top",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "wblookleft_2",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Position left",
+          "default": 60
+        },
+        {
+          "type": "product",
+          "id": "product_2",
+          "label": "Select product"
+        },
+
+        {
+          "type": "header",
+          "content": "Product 3"
+        },
+        {
+          "type": "range",
+          "id": "wblooktop_3",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Position top",
+          "default": 61
+        },
+        {
+          "type": "range",
+          "id": "wblookleft_3",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Position left",
+          "default": 48
+        },
+        {
+          "type": "product",
+          "id": "product_3",
+          "label": "Select product"
+        },
+
+        {
+          "type": "header",
+          "content": "Product 4"
+        },
+        {
+          "type": "range",
+          "id": "wblooktop_4",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Position top",
+          "default": 30
+        },
+        {
+          "type": "range",
+          "id": "wblookleft_4",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Position left",
+          "default": 50
+        },
+        {
+          "type": "product",
+          "id": "product_4",
+          "label": "Select product"
+        },
+
+        {
+          "type": "header",
+          "content": "Product 5"
+        },
+        {
+          "type": "range",
+          "id": "wblooktop_5",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Position top",
+          "default": 20
+        },
+        {
+          "type": "range",
+          "id": "wblookleft_5",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Position left",
+          "default": 40
+        },
+        {
+          "type": "product",
+          "id": "product_5",
+          "label": "Select product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slideshow",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "Image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

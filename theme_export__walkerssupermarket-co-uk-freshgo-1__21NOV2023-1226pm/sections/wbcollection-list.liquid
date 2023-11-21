@@ -1,0 +1,78 @@
+<link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'component-slider.css' | asset_url | stylesheet_tag }}</noscript>
+
+<div class="wbcolltop">
+  <div class="container">
+        <h2 class="heading text-left"><span>{{ section.settings.m_title }}</span></h2>
+        <slider-component>
+            <ul class="allslideprt slider row rless" id="Slider-cattab">
+                {% for block in section.blocks limit: section.blocks.size %}
+                <li class="slider__slide list-unstyled wbcatb col-2 cless" id="Slide-{{ block.id }}-{{ forloop.index }}">
+                        {%- assign collection = collections[block.settings.collection] -%}
+                        {% if collection.image %}
+                        {%- assign collection_image = collection.image -%}
+                        {% elsif collection.products.first and collection.products.first.images != empty %}
+                        {%- assign collection_image = collection.products.first.featured_image -%}
+                        {% else %}
+                        {% assign collection_image = blank %}
+                        {% endif %}
+                        <div class="homecatb">    
+                            <a href="{% if collection.products == empty %}#{% else %}{{ collection.url }}{% endif %}">
+                                {% if collection_image != blank %}
+                                    <img loading="lazy" class="img-fluid mx-auto" src="{{ collection_image | img_url: 'large' }}" alt="{{ collection.title }}">
+                                {% else %}
+                                    <img loading="lazy" class="img-fluid mx-auto" src="https://dummyimage.com/85x100/f8e0e0">
+                                {% endif %}
+                                <div class="catcontent">
+                                    <h2><span>{{ collection.title }}</span></h2>
+                                </div>
+                            </a>
+                        </div>
+
+                    </li>
+                {% endfor %}
+            </ul>
+        </slider-component>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Webi Collection list",
+    "class": "spaced-section index-section",
+    "max_blocks": 12,
+	"settings": [
+      {
+        "type": "text",
+        "id": "m_title",
+        "label": "Top Heading",
+        "default": "Top Category"
+      }
+    ],
+    "blocks": [
+    {
+        "type": "webi_collection",
+        "name": "Collection",
+        "settings": [
+            {
+                "label": "Collection",
+                "id": "collection",
+                "type": "collection"
+            }
+        ]
+    }
+    ],
+    "presets": [
+    {
+        "name": "Webi Collection list",
+        "category": "Collection",
+        "blocks": [
+            {
+              "type": "webi_collection"
+            }
+        ]
+    }
+    ]
+}
+{% endschema %}

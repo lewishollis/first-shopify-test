@@ -1,0 +1,225 @@
+<div class="offerbnr">
+    <div class="container">
+        <div class="row rless">  
+            <div class="col-12 col-sm-6 cless">
+                <div class="beffect">
+                    {% if section.settings.link != blank %}<a href="{{ section.settings.link }}" title="{{ 'wbcustomlabel.wballtext.banner' | t }}">{% endif%}
+                    {% if section.settings.image != blank %}
+                        <img loading="lazy" src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image.alt }}" class="img-fluid mx-auto" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}"/>
+                    {% else %}
+                        <img loading="lazy" src="https://dummyimage.com/585x455/f8e0e0" class="img-fluid mx-auto" alt="banner" width="585" height="455"/>
+                    {% endif %}
+                    {% if section.settings.link != blank %}</a>{% endif%}  
+                </div>
+                <div class="ofrtext">
+                    <div class="ofrff">
+                        {% if section.settings.storytitle != blank %}
+                            <h2>{{ section.settings.storytitle }}</h2>
+                        {% endif %}
+                        {% if section.settings.distitle != blank %}
+                            <h3 style="color: {{ section.settings.bg_btn_color }};">{{ section.settings.distitle }}</h3>
+                        {% endif %}
+                        {% if section.settings.storysubtitle != blank %}
+                            <p>{{ section.settings.storysubtitle }}</p>
+                        {% endif %}
+                        {% if section.settings.link != blank %}
+                            <a href="{{ section.settings.link }}" class="btn btn-primary" style="background: {{ section.settings.bg_btn_color }};">{{ section.settings.btn }}{% render 'icon-arrow' %}</a>
+                        {% endif %}
+                    </div>  
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 cless">
+                <div class="beffect">
+                    {% if section.settings.link1 != blank %}<a href="{{ section.settings.link1 }}" title="{{ 'wbcustomlabel.wballtext.banner' | t }}">{% endif%}
+                    {% if section.settings.image1 != blank %}
+                        <img loading="lazy" src="{{ section.settings.image1 | img_url: 'master' }}" alt="{{ section.settings.image.alt }}" class="img-fluid mx-auto" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}"/>
+                    {% else %}
+                        <img loading="lazy" src="https://dummyimage.com/585x216/f8e0e0" class="img-fluid mx-auto" alt="banner" width="585" height="216"/>
+                    {% endif %}
+                    {% if section.settings.link1 != blank %}</a>{% endif%}  
+                </div>
+                <div class="rightext">
+                    <div class="rightff">
+                        {% if section.settings.storytitle1 != blank %}
+                            <h2 style="color: {{ section.settings.bg_btn_color1 }};">{{ section.settings.storytitle1 }}</h2>
+                        {% endif %}
+                        {% if section.settings.storysubtitle1 != blank %}
+                            <p>{{ section.settings.storysubtitle1 }}</p>
+                        {% endif %}
+                        {% if section.settings.link1 != blank %}
+                            <a href="{{ section.settings.link1 }}" class="btn btn-primary" style="background: {{ section.settings.bg_btn_color1 }};">{{ section.settings.btn1 }}{% render 'icon-arrow' %}</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class=" middle-top-b">
+                    <div class="beffect">
+                        {% if section.settings.link2 != blank %}<a href="{{ section.settings.link2 }}" title="{{ 'wbcustomlabel.wballtext.banner' | t }}">{% endif%}
+                        {% if section.settings.image2 != blank %}
+                            <img loading="lazy" src="{{ section.settings.image2 | img_url: 'master' }}" alt="{{ section.settings.image.alt }}" class="img-fluid mx-auto" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}"/>
+                        {% else %}
+                            <img loading="lazy" src="https://dummyimage.com/585x216/f8e0e0" class="img-fluid mx-auto" alt="banner" width="585" height="216"/>
+                        {% endif %}
+                        {% if section.settings.link2 != blank %}</a>{% endif%}  
+                    </div>
+                    <div class="rtext">
+                        <div class="rtff">
+                            {% if section.settings.storytitle2 != blank %}
+                                <h2 style="color: {{ section.settings.bg_btn_color2 }};">{{ section.settings.storytitle2 }}</h2>
+                            {% endif %}
+                            {% if section.settings.storysubtitle2 != blank %}
+                                <p>{{ section.settings.storysubtitle2 }}</p>
+                            {% endif %}
+                            {% if section.settings.link2 != blank %}
+                                <a href="{{ section.settings.link2 }}" class="btn btn-primary" style="background: {{ section.settings.bg_btn_color2 }};">{{ section.settings.btn2 }}{% render 'icon-arrow' %}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+  .offerbnr  { background: linear-gradient(0deg, {{ section.settings.bg_color }} 60%,rgba(255,255,255,1) 30%);}
+</style>
+
+{% schema %}
+{
+    "name": "Offer Banner",
+    "class": "spaced-section",
+    "settings": [
+        {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background Color",
+            "default": "#f5f5f5"
+        },
+        {
+          "type": "header",
+          "content": "Left Banner"
+        },
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "Size: 585x455"
+        },
+        {
+          "type": "text",
+          "id": "storytitle",
+          "label": "Heading",
+          "default": "New Shoes"
+        },
+        {
+          "type": "text",
+          "id": "distitle",
+          "label": "Discount",
+          "default": "-50%"
+        },
+        {
+          "type": "text",
+          "id": "storysubtitle",
+          "label": "Sub Heading",
+          "default": "SPRING - SUMMER 2021"
+        },
+        {
+          "type": "text",
+          "id": "btn",
+          "label": "Button",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL"
+        },
+        {
+          "type": "color",
+          "id": "bg_btn_color",
+          "default": "#fff",
+          "label": "Button Bg Color"
+        },
+        {
+          "type": "header",
+          "content": "Right Banner"
+        },
+        {
+            "type": "image_picker",
+            "id": "image1",
+            "label": "Image",
+            "info": "Size: 585x216"
+        },
+        {
+          "type": "text",
+          "id": "storytitle1",
+          "label": "Heading",
+          "default": "New Shoes"
+        },
+        {
+          "type": "text",
+          "id": "storysubtitle1",
+          "label": "Sub Heading",
+          "default": "SPRING - SUMMER 2021"
+        },
+        {
+          "type": "text",
+          "id": "btn1",
+          "label": "Button",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "link1",
+          "label": "Link URL"
+        },
+        {
+          "type": "color",
+          "id": "bg_btn_color1",
+          "default": "#fff",
+          "label": "Button Bg Color"
+        },
+        {
+            "type": "image_picker",
+            "id": "image2",
+            "label": "Image",
+            "info": "Size: 585x216"
+        },
+        {
+          "type": "text",
+          "id": "storytitle2",
+          "label": "Heading",
+          "default": "New Shoes"
+        },
+        {
+          "type": "text",
+          "id": "storysubtitle2",
+          "label": "Sub Heading",
+          "default": "SPRING - SUMMER 2021"
+        },
+        {
+          "type": "text",
+          "id": "btn2",
+          "label": "Button",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "link2",
+          "label": "Link URL"
+        },
+        {
+          "type": "color",
+          "id": "bg_btn_color2",
+          "default": "#fff",
+          "label": "Button Bg Color"
+        }
+    ],
+    "presets": [
+        {
+          "name": "Offer Banner",
+          "category": "Image"   
+        }
+    ]
+}
+{% endschema %}

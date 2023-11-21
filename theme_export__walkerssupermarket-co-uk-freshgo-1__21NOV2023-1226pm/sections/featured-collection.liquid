@@ -1,0 +1,78 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-grid.css' | asset_url | stylesheet_tag }}
+{{ 'component-rating.css' | asset_url | stylesheet_tag }}
+<div class="container product-tab-item">
+    <div class="pro-tab tabs">
+        <h2 class="heading text-left"><span>{{ section.settings.m_title }}</span><strong>{{ section.settings.s_title }}</strong></h2>
+        <ul class="list-inline nav nav-tabs text-right">
+            <li class="nav-item">
+                <a class="nav-link active" href="#tab-fea-0"  data-toggle="tab">{{ section.settings.title }}</a>
+            </li><li class="nav-item">
+                <a class="nav-link" href="#tab-latest-0"  data-toggle="tab">{{ section.settings.title_2 }}</a>
+            </li><li class="nav-item">
+                <a class="nav-link" href="#tab-best-0"  data-toggle="tab">{{ section.settings.title_3 }}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content tab-pro rless" id="tab-content">
+        <div id="tab-fea-0" class="tab-pane active clearfix fadeIn animated">
+        </div>
+
+        <div id="tab-latest-0" class="tab-pane clearfix fadeIn animated">
+        </div>
+
+        <div id="tab-best-0" class="tab-pane clearfix fadeIn animated">
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.featured-collection.name",
+  "tag": "section",
+  "class": "spaced-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "m_title",
+      "label": "Top Heading",
+      "default": "Top product"
+    },
+    {
+      "type": "text",
+      "id": "s_title",
+      "label": "Sub Heading",
+      "default": "add top product to weekly line top"
+    },
+    {
+      "type": "header",
+      "content": "Tab Heading",
+      "info": "Note : Products are display in Tab Feature, Tab Latest and Tab Bestseller"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "featured"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Heading",
+      "default": "Latest"
+    },
+    {
+      "type": "text",
+      "id": "title_3",
+      "label": "Heading",
+      "default": "Bestseller"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.featured-collection.presets.name"
+    }
+  ]
+}
+{% endschema %}

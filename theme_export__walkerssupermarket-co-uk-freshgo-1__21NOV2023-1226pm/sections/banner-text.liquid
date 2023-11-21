@@ -1,0 +1,91 @@
+<div data-section-id="{{ section.id }}" class="bnrtext container">
+    <div class="row rless">  
+        {% if section.blocks.size > 0 %}      
+            {% for block in section.blocks %}
+                <div class="col-sm-6 col-12 cless"> 
+                    {% if block.settings.link != blank %}<a href="{{ block.settings.link }}" title="{{ 'wbcustomlabel.wballtext.banner' | t }}">{% endif%}
+                    {% if block.settings.image != blank %}
+                        <img loading="lazy" src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.image.alt }}" class="img-fluid mx-auto" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}"/>
+                    {% else %}
+                        <img loading="lazy" src="https://dummyimage.com/691x470/f8e0e0" class="img-fluid mx-auto" alt="banner" width="691" height="470"/>
+                    {% endif %}           
+                    {% if block.settings.link != blank %}</a>{% endif%}  
+                </div>
+
+                <div class="col-sm-6 col-12 cless imgbnrtext">
+                    {% if block.settings.toptitle != blank %}
+                        <strong>{{ block.settings.toptitle | escape }}</strong>
+                    {% endif %}
+                    {% if block.settings.storytitle != blank %}
+                        <h2>{{ block.settings.storytitle | escape }}</h2>
+                    {% endif %}
+                    {% if block.settings.desc != blank %}
+                        <p>{{ block.settings.desc }}</p>
+                    {% endif %}
+                    {% if block.settings.linkurl != blank %}
+                        <a href="{{ block.settings.linkurl }}" class="btn btn-primary">{{ 'wbcustomlabel.wballtext.readmore' | t }}</a>
+                    {% endif %}
+                </div> 
+
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% schema %}
+{
+"name": "Banner text",
+"class": "spaced-section",
+"settings": [
+],
+ "blocks": [
+    {
+      "type": "Image",
+      "name": "Banner text",
+      "settings": [ 
+            {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Size: 691x470"
+        },
+        {
+        "type": "url",
+        "id": "link",
+        "label": "Link URL"
+        },
+        {
+        "type": "text",
+        "id": "toptitle",
+        "label": "Top Heading"
+        },
+        {
+        "type": "text",
+        "id": "storytitle",
+        "label": "Heading"
+        },
+        {
+        "type": "richtext",
+        "id": "desc",
+        "label": "Description"
+        },
+        {
+        "type": "url",
+        "id": "linkurl",
+        "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner text",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "Image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

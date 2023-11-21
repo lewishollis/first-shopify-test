@@ -1,0 +1,186 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-grid.css' | asset_url | stylesheet_tag }}
+{{ 'component-rating.css' | asset_url | stylesheet_tag }}
+
+<div class="toprt" style="background-color:{{ section.settings.bg_color }}">
+    <div class="container">
+        <div class="row rless">
+            <div class="col-xl-7 col-lg-4 col-md-12 col-12 rtlleft cless">
+                <div class="toptext">
+                    <div class="topff">
+                        {% if section.settings.image != blank %}
+                            <img loading="lazy" src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image.alt }}" class="img-fluid mx-auto" width="{{ section.settings.image.width }}" height="{{ section.settings.image.height }}"/>
+                        {% endif %}
+                        {% if section.settings.subtitle != blank %}
+                            <h3>{{ section.settings.subtitle }}</h3>
+                        {% endif %}
+                        {% if section.settings.storytitle != blank %}
+                            <h2>{{ section.settings.storytitle }}</h2>
+                        {% endif %}
+                        {% if section.settings.storysubtitle != blank %}
+                            <p>{{ section.settings.storysubtitle }}</p>
+                        {% endif %}
+                        {% if section.settings.linkurl != blank %}
+                            <a href="{{ section.settings.linkurl }}" class="btn btn-primary">{{ 'wbcustomlabel.wballtext.shopnow' | t }}
+                            {% render 'icon-arrow' %}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-5 col-lg-8 col-md-12 col-12 rtlright cless">
+                <slider-component>
+                    <ul class="allslideprt slider row rless" id="Slider-{{ section.id }}-{{ block.id }}" data-autoplay="true" data-speed="2" aria-live="polite">
+                
+                        {%- assign collection = collections[section.settings.collection] -%}
+                        {% assign num_row = section.settings.rows | times: 1 %} 
+                        {% assign temp = 0 %}
+ 
+                            {%- for product in collection.products -%}
+                                {% if temp == 0 %}<li id="Slide-{{ section.id }}-{{ block.id }}-{{ forloop.index }}" class="list-unstyled grid__item twopro col-6 cless slider__slide" tabindex="-1">{% endif %}
+                                    
+                                        {% render 'product-card',
+                                        product_card_product: product,
+                                        show_rating: section.settings.show_rating,
+                                        picker_type: section.settings.picker_type,
+                                        show_variants: section.settings.show_variants,
+                                        show_colorswatch: section.settings.show_colorswatch,
+                                        display_product_type: section.settings.display_product_type  %}
+                                 
+                                {% assign temp = temp | plus: 1 %}
+                                {% if temp == num_row %}</li>{% assign temp = 0 %}{% endif %}
+                                {%- else -%}
+                                {%- for i in (1..6) -%}
+                                    <div id="Slide-{{ section.id }}-{{ block.id }}-{{ forloop.index }}" class="list-unstyled twopro col-6 cless slider__slide" tabindex="-1">
+                                        {% render 'product-card-placeholder' %}
+                                    </div>
+                                {%- endfor -%}
+                      		
+                            {% endfor %}
+
+                    </ul>
+                </slider-component>
+            </div>
+        </div>
+    </div>
+</div>
+  
+{% schema %}
+{
+  "name": "Toprated Product",
+  "class": "index-section",
+  "settings": [
+    {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background Color",
+        "default": "#f5f5f5"
+    },
+    {
+      "type": "header",
+      "content": "Left Side Text"
+    },
+    {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image",
+        "info": "Size: 46x44"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sub Heading",
+      "default": "Organic store"
+    },
+    {
+      "type": "text",
+      "id": "storytitle",
+      "label": "Heading",
+      "default": "Organic fresh fruits for your health"
+    },
+
+    {
+      "type": "text",
+      "id": "storysubtitle",
+      "label": "Description",
+      "default": "Interdum et malesuada fames ac ante ipsum primis in faucibus. Mauris eleifend sagittis mollis. Nulla finibus arcu eu tortor gravida aliquet"
+    },
+    {
+      "type": "url",
+      "id": "linkurl",
+      "label": "Link URL"
+    },
+    {
+      "type": "header",
+      "content": "Right Side Product"
+    },
+    {
+      "type": "range",
+      "id": "rows",
+      "label": "Rows",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 2
+    },
+    {
+        "type": "checkbox",
+        "id": "display_product_type",
+        "label": "Display Product Type?",
+        "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "default": false,
+      "label": "t:sections.featured-collection.settings.show_rating.label",
+      "info": "t:sections.featured-collection.settings.show_rating.info"
+    },
+    {
+      "type": "header",
+      "content": "Variants"
+    },    
+    {
+      "type": "checkbox",
+      "id": "show_variants",
+      "default": true,
+      "label": "Show color/size variants"
+    },
+    {
+      "type": "select",
+      "id": "picker_type",
+      "options": [
+        {
+          "value": "dropdown",
+          "label": "t:sections.main-product.blocks.variant_picker.settings.picker_type.options__1.label"
+        },
+        {
+          "value": "button",
+          "label": "t:sections.main-product.blocks.variant_picker.settings.picker_type.options__2.label"
+        }
+      ],
+      "default": "button",
+      "label": "t:sections.main-product.blocks.variant_picker.settings.picker_type.label"
+    },
+    {
+        "type": "checkbox",
+        "id": "show_colorswatch",
+        "default": true,
+        "label": "Enable color swatches",
+        "info": "Type set to be 'Pills'. [Learn how to setup swatches](https://www.webibazaar.com/shopify/viola-doc/home#colorswatch)"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:sections.featured-collection.settings.collection.label"
+    } 
+  ],
+  "presets": [
+    {
+     "name": "Toprated Product",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,797 @@
+<link rel="stylesheet" href="{{ 'component-menu-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-cart-notification.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
+{%- if settings.predictive_search_enabled -%}
+  <link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ 'component-loading-overlay.css' | asset_url }}" media="print" onload="this.media='all'">
+{%- endif -%}
+
+<noscript>{{ 'component-menu-drawer.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-cart-notification.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-cart-items.css' | asset_url | stylesheet_tag }}</noscript>
+
+<style>
+  header-drawer {
+    justify-self: start;
+    margin-left: -1.2rem;
+  }
+  @media screen and (min-width: 992px) {
+    header-drawer {
+      display: none;
+    }
+  }
+</style>
+
+<script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'details-modal.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
+
+<svg xmlns="http://www.w3.org/2000/svg" class="hidden">
+
+  <symbol id="icon-search" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.74603 9.70457C7.82797 10.4182 6.67438 10.8432 5.42152 10.8432C2.4273 10.8432 0 8.41586 0 5.4216C0 2.42733 2.4273 0 5.42152 0C8.41575 0 10.843 2.42733 10.843 5.4216C10.843 6.67447 10.4181 7.82808 9.70443 8.74615L11.8015 10.8431C12.0662 11.1078 12.0662 11.5368 11.8015 11.8015C11.5369 12.0662 11.1078 12.0662 10.8431 11.8015L8.74603 9.70457ZM9.48767 5.4216C9.48767 7.6673 7.66719 9.4878 5.42152 9.4878C3.17586 9.4878 1.35538 7.6673 1.35538 5.4216C1.35538 3.1759 3.17586 1.3554 5.42152 1.3554C7.66719 1.3554 9.48767 3.1759 9.48767 5.4216Z" fill="#06623B"/>
+</symbol>
+
+  <symbol id="icon-close" class="icon icon-close" fill="none" viewBox="0 0 18 17">
+    <path d="M.865 15.978a.5.5 0 00.707.707l7.433-7.431 7.579 7.282a.501.501 0 00.846-.37.5.5 0 00-.153-.351L9.712 8.546l7.417-7.416a.5.5 0 10-.707-.708L8.991 7.853 1.413.573a.5.5 0 10-.693.72l7.563 7.268-7.418 7.417z" fill="currentColor">
+  </symbol>
+</svg>
+      
+      <div class="col-sm-5 col-12 text-right wish-cur">
+        <ul class="list-unstyled hwcur">
+            <li>
+            {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
+                  <noscript>
+                    {%- form 'localization', id: 'FooterCountryFormNoScript', class: 'localization-form' -%}
+                      <div class="localization-form__select">
+                        <h2 class="visually-hidden" id="FooterCountryLabelNoScript">{{ 'localization.country_label' | t }}</h2>
+                        <select class="localization-selector link" name="country_code" aria-labelledby="FooterCountryLabelNoScript">
+                          {%- for country in localization.available_countries -%}
+                            <option value="{{ country.iso_code }}" {%- if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+                              {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                            </option>
+                          {%- endfor -%}
+                        </select>
+                        {% render 'icon-caret' %}
+                      </div>
+                      <button class="button button--tertiary">{{ 'localization.update_country' | t }}</button>
+                    {%- endform -%}
+                  </noscript>
+                  <localization-form>
+                    {%- form 'localization', id: 'FooterCountryForm', class: 'localization-form' -%}
+                      <div class="no-js-hidden">
+                        <div class="disclosure">
+                          <button type="button" class="disclosure__button localization-form__select localization-selector link link--text caption-large" aria-expanded="false" aria-controls="FooterCountryList" aria-describedby="FooterCountryLabel">
+                            {{ localization.country.name }} ({{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }})
+                            {% render 'icon-caret' %}
+                          </button>
+                          <ul id="FooterCountryList" role="list" class="disclosure__list list-unstyled dropdown-menu-right" hidden>
+                            {%- for country in localization.available_countries -%}
+                              <li class="disclosure__item" tabindex="-1">
+                                <a class="link link--text disclosure__link caption-large{% if country.iso_code == localization.country.iso_code %} disclosure__link--active{% endif %} focus-inset" href="#"{% if country.iso_code == localization.country.iso_code %} aria-current="true"{% endif %} data-value="{{ country.iso_code }}">
+                                  {{ country.name }} <span class="localization-form__currency">({{ country.currency.iso_code }} {{ country.currency.symbol }})</span>
+                                </a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        </div>
+                        <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+                      </div>
+                    {%- endform -%}
+                  </localization-form>
+                {%- endif -%}
+
+                {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
+                  <noscript>
+                    {%- form 'localization', id: 'FooterLanguageFormNoScript', class: 'localization-form' -%}
+                      <div class="localization-form__select">
+                        <h2 class="visually-hidden" id="FooterLanguageLabelNoScript">{{ 'localization.language_label' | t }}</h2>
+                        <select class="localization-selector link" name="locale_code" aria-labelledby="FooterLanguageLabelNoScript">
+                          {%- for language in localization.available_languages -%}
+                            <option value="{{ language.iso_code }}" lang="{{ language.iso_code }}" {%- if language.iso_code == localization.language.iso_code %} selected{% endif %}>
+                              {{ language.endonym_name | capitalize }}
+                            </option>
+                          {%- endfor -%}
+                        </select>
+                        {% render 'icon-caret' %}
+                      </div>
+                      <button class="button button--tertiary">{{ 'localization.update_language' | t }}</button>
+                    {%- endform -%}
+                  </noscript>
+
+                  <localization-form>
+                    {%- form 'localization', id: 'FooterLanguageForm', class: 'localization-form' -%}
+                      <div class="no-js-hidden">
+                        <div class="disclosure">
+                          <button type="button" class="disclosure__button localization-form__select localization-selector link link--text caption-large" aria-expanded="false" aria-controls="FooterLanguageList" aria-describedby="FooterLanguageLabel">
+                            {{ localization.language.endonym_name | capitalize }}
+                            {% render 'icon-caret' %}
+                          </button>
+                          <ul id="FooterLanguageList" role="list" class="disclosure__list list-unstyled dropdown-menu-right" hidden>
+                            {%- for language in localization.available_languages -%}
+                              <li class="disclosure__item" tabindex="-1">
+                                <a class="link link--text disclosure__link caption-large{% if language.iso_code == localization.language.iso_code %} disclosure__link--active{% endif %} focus-inset" href="#" hreflang="{{ language.iso_code }}" lang="{{ language.iso_code }}"{% if language.iso_code == localization.language.iso_code %} aria-current="true"{% endif %} data-value="{{ language.iso_code }}">
+                                  {{ language.endonym_name | capitalize }}
+                                </a>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        </div>
+                        <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
+                      </div>
+                    {%- endform -%}
+                  </localization-form>
+                {%- endif -%}
+            </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<{% if section.settings.enable_sticky_header %}sticky-header{% else %}div{% endif %} class="header-wrapper"> 
+<header class="header" style="background: {{ section.settings.topbg }};">
+    <div class="container">
+      <div class="header-top">
+          <div class="row htop">
+              <div class="col-xl-2 col-lg-3 col-md-4 col-12 headlogo">
+                  {%- if request.page_type == 'index' -%}
+                  <h1 class="header__heading">
+                  {%- endif -%}
+                      <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
+                      {%- if section.settings.logo != blank -%}
+                      {%- assign image_size = section.settings.logo_width | append: 'x' -%}
+                          <img srcset="{{ section.settings.logo | img_url: image_size }} 1x, {{ section.settings.logo | img_url: image_size, scale: 2 }} 2x"
+                          class="img img-fluid mx-auto" 
+                          src="{{ section.settings.logo | img_url: image_size }}"
+                          loading="lazy"
+                          class="header__heading-logo"
+                          width="{{ section.settings.logo.width }}"
+                          height="{{ section.settings.logo.height }}"
+                          alt="{{ section.settings.logo.alt | default: shop.name | escape }}"
+                          >
+                      {%- else -%}
+                          <span class="h2">{{ shop.name }}</span>
+                      {%- endif -%}
+                      </a>
+                  {%- if request.page_type == 'index' -%}
+                  </h1>
+                  {%- endif -%}
+              </div>
+              <div class="col-xl-10 col-lg-9 col-md-8 col-12 text-right tright">
+                <div class="row justify-content-between">
+                  <div class="col-lg-7 col-md-8 col-12">
+                    <div class="header__icons">
+                      <div class="search-modal__content" tabindex="-1">
+                         <div style="margin-right: 10px;">
+                           {% render 'cod-checker' %}
+                         </div>
+
+                        {%- if settings.predictive_search_enabled -%}
+                          <predictive-search class="search-modal__form" data-loading-text="{{ 'accessibility.loading' | t }}">
+                        {%- endif -%}
+                          <form action="{{ routes.search_url }}" method="get" role="search" class="search search-modal__form">
+                            <div class="field">
+                              <input class="search__input field__input"
+                                id="Search-In-Modal"
+                                type="search"
+                                name="q"
+                                value=""
+                                placeholder="{{ 'general.search.search' | t }}"
+                                {%- if settings.predictive_search_enabled -%}
+                                  role="combobox"
+                                  aria-expanded="false"
+                                  aria-owns="predictive-search-results-list"
+                                  aria-controls="predictive-search-results-list"
+                                  aria-haspopup="listbox"
+                                  aria-autocomplete="list"
+                                  autocorrect="off"
+                                  autocomplete="off"
+                                  autocapitalize="off"
+                                  spellcheck="false"
+                                {%- endif -%}
+                              >
+                              <label class="field__label" for="Search-In-Modal">{{ 'general.search.search' | t }}</label>
+                              <input type="hidden" name="options[prefix]" value="last">
+                              <button class="search__button field__button" aria-label="{{ 'general.search.search' | t }}">
+                                <svg class="icon icon-search" aria-hidden="true" focusable="false" role="presentation">
+                                  <use href="#icon-search">
+                                </svg>
+                              </button>
+                            </div>
+
+                            {%- if settings.predictive_search_enabled -%}
+                              <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+                                <div class="predictive-search__loading-state">
+                                  <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                                  </svg>
+                                </div>
+                              </div>
+
+                              <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+                            {%- endif -%}
+                          </form>
+                        {%- if settings.predictive_search_enabled -%}
+                          </predictive-search>
+                        {%- endif -%}
+                      </div>
+                        {%comment%}<details-modal class="header__search d-lg-none">
+                          <details>
+                            <summary class="header__icon header__icon--search header__icon--summary link focus-inset modal__toggle" aria-haspopup="dialog" aria-label="{{ 'general.search.search' | t }}">
+                              <span>
+                                <svg class="modal__toggle-open icon icon-search" aria-hidden="true" focusable="false" role="presentation">
+                                  <use href="#icon-search">
+                                    </svg>
+                                  <svg class="modal__toggle-close icon icon-close" aria-hidden="true" focusable="false" role="presentation">
+                                    <use href="#icon-close">
+                                      </svg>
+                                    </span>
+                                  </summary>
+                                <div class="search-modal modal__content" role="dialog" aria-modal="true" aria-label="{{ 'general.search.search' | t }}">
+                                  <div class="modal-overlay"></div>
+
+                                </div>
+                                </details>
+                              </details-modal>
+                            <button type="button" class="search-modal__close-button modal__close-button link link--text focus-inset d-lg-none" aria-label="{{ 'accessibility.close' | t }}">
+                              <svg class="icon icon-close" aria-hidden="true" focusable="false" role="presentation">
+                                <use href="#icon-close">
+                                  </svg>
+                                </button>{%endcomment%}
+                    </div>
+                  </div>
+                  <div class="col-lg-5 col-md-4 col-12 huscrt">
+                    {%- if shop.customer_accounts_enabled -%}
+                      <div class="slidedown_section dropdown">
+                          <div class="hmuser" data-toggle="dropdown">
+                              <div class="userdrop">
+                                <span class="svgbg">{% render 'icon-account' %}</span>
+                                  <span class="medium-hide small-hide">
+                                      {% if customer %}
+                                       {{ customer.name }}
+                                      {% else %}
+                                       {{ 'wbcustomlabel.wballtext.profile' | t }}
+                                      {% endif %}
+                                  </span>
+                                  
+                              </div>
+                          </div>
+                          <div class="dropdown-menu dropdown-menu-right">
+                              <div class="header-panel-top">
+                                  <div class="customer_account text-left">
+                                      <ul class="list-unstyled">
+                                          {% if customer %}  
+                                          <li>
+                                              <a href="/account">
+                                              {% render 'icon-login' %}
+                                              {{ 'wbcustomlabel.wballtext.account' | t }}
+                                              </a>
+                                          </li>
+                                          <li>
+                                              <a href="/account/logout">
+                                              {% render 'icon-signout' %}
+                                              {{ 'wbcustomlabel.wballtext.log_out' | t }}
+                                              </a>
+                                          </li>
+                                          {% else %}
+                                          <li>
+                                              <a href="/account/login">
+                                              {% render 'icon-lock' %}
+                                              {{ 'wbcustomlabel.wballtext.log_in' | t }}
+                                              </a>
+                                          </li>
+                                          <li>
+                                              <a href="/account/register" title="{{ 'wbcustomlabel.wballtext.create_accounthome' | t }}">
+                                              {% render 'icon-login' %}
+                                              {{ 'wbcustomlabel.wballtext.create_accounthome' | t }}
+                                              </a>
+                                          </li>
+                                          {% endif %}
+                                      </ul>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                    {%- endif -%}
+
+                  {%comment%} Webibazaar Cart Dropdown {%endcomment%}
+                  <div class="dropdown" id="cart-icon-bubble">
+                      <div data-toggle="dropdown"> 
+                          <div class="wbhcart" style="background-color: {{ section.settings.cart_bg }}">
+                            <div class="headcart">
+                              <span class="svgbg">{% render 'icon-hcart' %}</span> 
+                              <span id="Cartcount">{{ cart.item_count }}</span>
+                            </div>
+                              <div class="hcart">
+                                <span class="medium-hide small-hide">&nbsp;{{ 'wbcustomlabel.wballtext.cartitem' | t }}</span>
+                                <h6 class="cart-tot">
+                                  {{cart.total_price | money }}
+                                </h6>
+                              </div>
+                              {% render 'icon-caret' %}
+                            </div>
+                      </div>
+                      <div class="dropdown-menu dropdown-menu-right">
+                          <webi-cart-items class="{% if cart == empty %} is-empty{% endif %}">
+                              <div class="cart__warnings">
+                                  <h5 class="cart__empty-text">{{ 'sections.cart.empty' | t }}</h5>
+                              </div>
+                              <form action="{{ routes.cart_url }}" class="cart__contents critical-hidden" method="post" id="cart">
+                                  <div id="webi-main-cart-items" data-id="{{ section.id }}">
+                                      <div class="js-contents">
+                                          {%- if cart != empty -%}
+                                              {%- for item in cart.items -%}
+                                                  <div class="wbheadcartdrop" id="WbCartItem-{{ item.index | plus: 1 }}">
+                                                      <div class="wbcartdimg">
+                                                          {% if item.image %}
+                                                          {% comment %} Leave empty space due to a:empty CSS display: none rule {% endcomment %}
+                                                              <a href="{{ item.url }}">
+                                                                  <img class="img-fluid mx-auto"
+                                                                  src="{{ item.image | img_url: '100x' }}"
+                                                                  alt="{{ item.image.alt | escape }}"
+                                                                  loading="lazy"
+                                                                  width="100"
+                                                                  height="{{ 100 | divided_by: item.image.aspect_ratio | ceil }}">
+                                                              </a>
+                                                          {% endif %}
+                                                      </div>
+                                                      <div class="wbcartddesc">
+                                                          {%- if section.settings.show_vendor -%}
+                                                              <p class="caption-with-letter-spacing light">{{ item.product.vendor }}</p>
+                                                          {%- endif -%}
+                                                          <a href="{{ item.url }}" class="wbcrtname">{{ item.product.title | escape }}</a>
+                                                          {%- if item.product.has_only_default_variant == false or item.properties.size != 0 or item.selling_plan_allocation != nil -%}
+                                                              <dl>
+                                                              {%- if item.product.has_only_default_variant == false -%}
+                                                                  {%- for option in item.options_with_values -%}
+                                                                      <div class="product-option">
+                                                                          <dt>{{ option.name }}: </dt>
+                                                                          <dd>{{ option.value }}</dd>
+                                                                      </div>
+                                                                  {%- endfor -%}
+                                                              {%- endif -%}
+                                                              {%- for property in item.properties -%}
+                                                                  {%- assign property_first_char = property.first | slice: 0 -%}
+                                                                  {%- if property.last != blank and property_first_char != '_' -%}
+                                                                      <div class="product-option">
+                                                                          <dt>{{ property.first }}: </dt>
+                                                                              <dd>
+                                                                              {%- if property.last contains '/uploads/' -%}
+                                                                                  <a href="{{ property.last }}" class="link" target="_blank">{{ property.last | split: '/' | last }}</a>
+                                                                              {%- else -%}
+                                                                                  {{ property.last }}
+                                                                              {%- endif -%}
+                                                                          </dd>
+                                                                      </div>
+                                                                  {%- endif -%}
+                                                              {%- endfor -%}
+                                                              </dl>
+                                                              <p class="product-option">{{ item.selling_plan_allocation.selling_plan.name }}</p>
+                                                          {%- endif -%}
+                                                          <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
+                                                              {%- for discount in item.discounts -%}
+                                                                  <li class="discounts__discount">
+                                                                      {%- render 'icon-discount' -%}
+                                                                      {{ discount.title }}
+                                                                  </li>
+                                                              {%- endfor -%}
+                                                          </ul>
+
+                                                          <div class="wbcartqtybr">
+                                                              <label class="visually-hidden" for="WbQuantity-{{ item.index | plus: 1 }}">{{ 'products.product.quantity.label' | t }}</label>
+                                                              <webi-quantity-input class="quantity">
+                                                                  <button class="quantity__button no-js-hidden" name="minus" type="button">
+                                                                      <span class="visually-hidden">{{ 'products.product.quantity.decrease' | t: product: item.product.title | escape }}</span>
+                                                                      {% render 'icon-minus' %}
+                                                                  </button>
+                                                                  <input class="quantity__input"
+                                                                  type="number"
+                                                                  name="updates[]"
+                                                                  value="{{ item.quantity }}"
+                                                                  min="0"
+                                                                  aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
+                                                                  id="WbQuantity-{{ item.index | plus: 1 }}"
+                                                                  data-index="{{ item.index | plus: 1 }}" >
+                                                                  <button class="quantity__button no-js-hidden" name="plus" type="button">
+                                                                      <span class="visually-hidden">{{ 'products.product.quantity.increase' | t: product: item.product.title | escape }}</span>
+                                                                      {% render 'icon-plus' %}
+                                                                  </button>
+                                                              </webi-quantity-input>
+                                                              <div class="cart-item__totals">
+                                                                  <div class="loading-overlay hidden">
+                                                                      <div class="loading-overlay__spinner">
+                                                                          <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                                                                          <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                                                                          </svg>
+                                                                      </div>
+                                                                  </div>
+                                                                  <div class="cart-item__price-wrapper">
+                                                                      {%- if item.original_line_price != item.final_line_price -%}
+                                                                          <dl class="cart-item__discounted-prices">
+                                                                              <dt class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</dt>
+                                                                              <dd><s class="cart-item__old-price price price--end">{{ item.original_line_price | money }}</s></dd>
+                                                                              <dt class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</dt>
+                                                                              <dd class="price price--end">{{ item.final_line_price | money }}</dd>
+                                                                          </dl>
+                                                                      {%- else -%}
+                                                                          <span class="price price--end">{{ item.original_line_price | money }}</span>
+                                                                      {%- endif -%}
+
+                                                                      {%- if item.variant.available and item.unit_price_measurement -%}
+                                                                          <div class="unit-price caption">
+                                                                              <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
+                                                                              {{ item.variant.unit_price | money }}
+                                                                              <span aria-hidden="true">/</span>
+                                                                              <span class="visually-hidden">&nbsp;{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span>
+                                                                              {%- if item.variant.unit_price_measurement.reference_value != 1 -%}
+                                                                                  {{- item.variant.unit_price_measurement.reference_value -}}
+                                                                              {%- endif -%}
+                                                                                  {{ item.variant.unit_price_measurement.reference_unit }}
+                                                                          </div>
+                                                                      {%- endif -%}
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                          <webi-cart-remove-button id="Remove-{{ item.index | plus: 1 }}" data-index="{{ item.index | plus: 1 }}">
+                                                              <a href="{{ item.url_to_remove }}" aria-label="{{ 'sections.cart.remove_title' | t: title: item.title }}">
+                                                                  {% render 'icon-remove' %}
+                                                              </a>
+                                                          </webi-cart-remove-button>
+                                                      </div>
+                                                  </div>
+                                              {%- endfor -%}
+                                          {%- endif -%}
+                                      </div>
+                                  </div>
+                                  <p class="visually-hidden" id="webi-cart-live-region-text" aria-live="polite" role="status"></p>
+                                  <p class="visually-hidden" id="shopping-cart-line-item-status" aria-live="polite" aria-hidden="true" role="status">{{ 'accessibility.loading' | t }}</p>
+                              </form>
+                          </webi-cart-items>
+                          <div class="{% if cart == empty %} is-empty{% endif %}" id="webi-main-cart-footer" data-id="{{ section.id }}">
+                              <div class="cart__blocks">
+                                  <div class="js-contents" {{ block.shopify_attributes }}>
+                                      <div class="totals">
+                                          <p>{{ 'sections.cart.subtotal' | t }}</p>
+                                          <h3>{{ cart.total_price | money_with_currency }}</h3>
+                                      </div>
+                                      <div>
+                                          {%- if cart.cart_level_discount_applications.size > 0 -%}
+                                              <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
+                                                  {%- for discount in cart.cart_level_discount_applications -%}
+                                                      <li class="discounts__discount discounts__discount--end">
+                                                          {%- render 'icon-discount' -%}
+                                                          {{ discount.title }}
+                                                          (-{{ discount.total_allocated_amount | money }})
+                                                      </li>
+                                                  {%- endfor -%}
+                                              </ul>
+                                          {%- endif -%}
+                                      </div>
+                                  </div>  
+                                  <div class="cart__ctas" {{ block.shopify_attributes }}>
+                                      <noscript>
+                                          <button type="submit" class="cart__update-button button button--secondary" form="cart">{{ 'sections.cart.update' | t }}</button>
+                                      </noscript>
+                                      <a href="{{ routes.cart_url }}" class="button button-primary">{{ 'wbcustomlabel.wballtext.viewcart' | t }}</a>
+                                      <button type="submit" id="checkout" class="cart__checkout-button button" name="checkout"{% if cart == empty %} disabled{% endif %} form="cart">
+                                          {{ 'sections.cart.checkout' | t }}
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div> 
+                  </div>
+                  {%comment%} Webibazaar Cart Dropdown Over {%endcomment%}
+                  </div>
+                </div>
+
+
+
+
+
+                  
+
+              </div>
+          </div>
+      </div>
+    </div>
+  </header>
+</{% if section.settings.enable_sticky_header %}sticky-header{% else %}div{% endif %}>
+
+
+{%- render 'cart-notification' -%}
+
+{% javascript %}
+  class LocalizationForm extends HTMLElement {
+    constructor() {
+      super();
+      this.elements = {
+        input: this.querySelector('input[name="locale_code"], input[name="country_code"]'),
+        button: this.querySelector('button'),
+        panel: this.querySelector('ul'),
+      };
+      this.elements.button.addEventListener('click', this.openSelector.bind(this));
+      this.elements.button.addEventListener('focusout', this.closeSelector.bind(this));
+      this.addEventListener('keyup', this.onContainerKeyUp.bind(this));
+
+      this.querySelectorAll('a').forEach(item => item.addEventListener('click', this.onItemClick.bind(this)));
+    }
+
+    hidePanel() {
+      this.elements.button.setAttribute('aria-expanded', 'false');
+      this.elements.panel.setAttribute('hidden', true);
+    }
+
+    onContainerKeyUp(event) {
+      if (event.code.toUpperCase() !== 'ESCAPE') return;
+
+      this.hidePanel();
+      this.elements.button.focus();
+    }
+
+    onItemClick(event) {
+      event.preventDefault();
+      const form = this.querySelector('form');
+      this.elements.input.value = event.currentTarget.dataset.value;
+      if (form) form.submit();
+    }
+
+    openSelector() {
+      this.elements.button.focus();
+      this.elements.panel.toggleAttribute('hidden');
+      this.elements.button.setAttribute('aria-expanded', (this.elements.button.getAttribute('aria-expanded') === 'false').toString());
+    }
+
+    closeSelector(event) {
+      const shouldClose = event.relatedTarget && event.relatedTarget.nodeName === 'BUTTON';
+      if (event.relatedTarget === null || shouldClose) {
+        this.hidePanel();
+      }
+    }
+  }
+
+  customElements.define('localization-form', LocalizationForm);
+
+
+
+  class StickyHeader extends HTMLElement {
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      this.header = document.querySelector('.section-header');
+      this.headerBounds = {};
+      this.currentScrollTop = 0;
+      this.preventReveal = false;
+      this.predictiveSearch = this.querySelector('predictive-search');
+
+      this.onScrollHandler = this.onScroll.bind(this);
+      this.hideHeaderOnScrollUp = () => this.preventReveal = true;
+
+      this.addEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
+      window.addEventListener('scroll', this.onScrollHandler, false);
+
+      this.createObserver();
+    }
+
+    setHeaderHeight() {
+      document.documentElement.style.setProperty('--header-height', `${this.header.offsetHeight}px`);
+    }
+
+    disconnectedCallback() {
+      this.removeEventListener('preventHeaderReveal', this.hideHeaderOnScrollUp);
+      window.removeEventListener('scroll', this.onScrollHandler);
+    }
+
+    createObserver() {
+      let observer = new IntersectionObserver((entries, observer) => {
+        this.headerBounds = entries[0].intersectionRect;
+        observer.disconnect();
+      });
+
+      observer.observe(this.header);
+    }
+
+    onScroll() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (this.predictiveSearch && this.predictiveSearch.isOpen) return;
+
+      if (scrollTop > this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
+        this.header.classList.add('scrolled-past-header');
+        if (this.preventHide) return;
+        requestAnimationFrame(this.hide.bind(this));
+      } else if (scrollTop < this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
+        this.header.classList.add('scrolled-past-header');
+        if (!this.preventReveal) {
+          requestAnimationFrame(this.reveal.bind(this));
+        } else {
+          window.clearTimeout(this.isScrolling);
+
+          this.isScrolling = setTimeout(() => {
+            this.preventReveal = false;
+          }, 66);
+
+          requestAnimationFrame(this.hide.bind(this));
+        }
+      } else if (scrollTop <= this.headerBounds.top) {
+        this.header.classList.remove('scrolled-past-header');
+        requestAnimationFrame(this.reset.bind(this));
+      }
+
+      this.currentScrollTop = scrollTop;
+    }
+
+    hide() {
+      this.header.classList.add('shopify-section-header-hidden', 'shopify-section-header-sticky');
+      this.closeMenuDisclosure();
+    }
+
+    reveal() {
+      this.header.classList.add('shopify-section-header-sticky', 'animate');
+      this.header.classList.remove('shopify-section-header-hidden');
+    }
+
+    reset() {
+      this.header.classList.remove('shopify-section-header-hidden', 'shopify-section-header-sticky', 'animate');
+    }
+
+    closeMenuDisclosure() {
+      this.disclosures = this.disclosures || this.header.querySelectorAll('details-disclosure');
+      this.disclosures.forEach(disclosure => disclosure.close());
+    }
+  }
+
+  customElements.define('sticky-header', StickyHeader);
+{% endjavascript %}
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    {% if section.settings.logo %}
+      {% assign image_size = section.settings.logo.width | append: 'x' %}
+      "logo": {{ section.settings.logo | img_url: image_size | prepend: "https:" | json }},
+    {% endif %}
+    "sameAs": [
+      {{ settings.social_twitter_link | json }},
+      {{ settings.social_facebook_link | json }},
+      {{ settings.social_pinterest_link | json }},
+      {{ settings.social_instagram_link | json }},
+      {{ settings.social_tiktok_link | json }},
+      {{ settings.social_tumblr_link | json }},
+      {{ settings.social_snapchat_link | json }},
+      {{ settings.social_youtube_link | json }},
+      {{ settings.social_vimeo_link | json }}
+    ],
+    "url": {{ shop.url | append: page.url | json }}
+  }
+</script>
+
+{%- if request.page_type == 'index' -%}
+  {% assign potential_action_target = shop.url | append: routes.search_url | append: "?q={search_term_string}" %}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {{ potential_action_target | json }},
+        "query-input": "required name=search_term_string"
+      },
+      "url": {{ shop.url | append: page.url | json }}
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.header.name",
+  "class": "section-header",
+  "settings": [
+    {
+        "type": "color",
+        "id": "topbg",
+        "default": "#fff",
+        "label": "Header Bg Color"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__3.content",
+      "info": "t:sections.footer.settings.header__4.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": true,
+      "label": "t:sections.footer.settings.enable_country_selector.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.settings.header__5.content",
+      "info": "t:sections.footer.settings.header__6.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "default": true,
+      "label": "t:sections.footer.settings.enable_language_selector.label"
+    },
+    {
+        "type": "header",
+        "content": "Header Contact Details"
+    },
+    {
+        "type": "color",
+        "id": "bg_color",
+        "default": "#f5f5f5",
+        "label": "Background Color"
+    },
+    {
+        "type": "color",
+        "id": "cart_bg",
+        "default": "#A8C73A",
+        "label": "Cart Background Color"
+    },
+    {
+        "type": "text",
+        "id": "offerhead",
+        "label": "offer",
+        "default": "Get 30% Off On Selected Items"
+    },
+        
+    {
+      "type": "text",
+      "id": "btn",
+      "label": "Button",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "btnlink",
+      "label": "Link URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:sections.header.settings.logo.label"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 250,
+      "step": 10,
+      "default": 100,
+      "unit": "t:sections.header.settings.logo_width.unit",
+      "label": "t:sections.header.settings.logo_width.label"
+    },
+    {
+      "type": "text",
+      "id": "support_no",
+      "label": "Contact Number",
+      "default": "610-403-403"
+    },
+    {
+      "type": "header",
+      "content": "Megamenu"
+    },
+    {
+      "type": "checkbox",
+      "id": "megamenu_toggle",
+      "label": "Show megamenu"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_header",
+      "default": true,
+      "label": "t:sections.header.settings.enable_sticky_header.label",
+      "info": "t:sections.header.settings.enable_sticky_header.info"
+    }
+  ]  
+}
+{% endschema %}

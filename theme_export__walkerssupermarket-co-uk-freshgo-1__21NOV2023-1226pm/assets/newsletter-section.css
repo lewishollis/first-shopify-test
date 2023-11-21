@@ -1,0 +1,170 @@
+.newsletter--narrow .newsletter__wrapper,
+.newsletter:not(.newsletter--narrow) .newsletter__wrapper.color-background-1 {
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+}
+.newsletter {
+  padding: 30px 0;
+}
+.newsletter__wrapper strong {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #fff;
+}
+.newsletter__wrapper strong svg {
+  width: 46px;
+  height: 44px;
+}
+.newsletter__wrapper h2 {
+  font-size: 60px;
+  font-weight: 700;
+  color: var(--gradient-base-accent-1);
+  margin-bottom: 20px;
+}
+.newsletter__wrapper p {
+  font-size: 14px;
+  max-width: 550px;
+  margin: 0 auto;
+}
+.newsletter-form__field-wrapper input {
+    background: var(--color-wbmaincolors-text);
+    border-radius: 64px !important;
+    height: 62px;
+    padding: 20px 50px;
+    border: 2px solid var(--gradient-base-accent-1);
+}
+.newsletter__subheading p {
+    color: var(--color-background);
+}
+.newsletter-form__field-wrapper .field__label {
+    top: 16px;
+    font-size: 18px;
+    left: 50px;
+    color: var(--gradient-base-accent-1);
+}
+.newsletter-form__field-wrapper .field__button {
+    height: 62px;
+    background: var(--gradient-base-accent-1);
+    color: var(--color-base-solid-button-labels);
+    border-radius: 64px;
+    position: unset;
+    min-width: 200px;
+    margin-left: 15px;
+    font-size: 17px;
+    font-weight: 600;
+}
+.newsletter-form__field-wrapper .field__button:hover {
+    background: var(--gradient-base-accent-2);
+    color: var(--color-wb-hovercolor-button-text);
+}
+.newsletter-form__field-wrapper .field__button svg {
+    margin-left: 15px;
+    fill: var(--color-wbmaincolors-text);
+}
+.newsletter-form__field-wrapper .field__button:hover svg {
+    fill: var(--color-wb-hovercolor-button-text);
+}
+.newsletter-form__field-wrapper button.btn-primary{
+    margin-left: 10px;
+    padding: 0 20px;
+}
+.newsletter-form__field-wrapper .field__input:focus {
+    padding: 15px 50px 0 50px;
+    color: var(--gradient-base-accent-1);
+}
+.newsletter-form__field-wrapper .field__input:focus~.field__label {
+   color: var(--gradient-base-accent-1);
+}
+.newsletter__wrapper > * + .newsletter-form {
+  margin-top: 3rem;
+}
+.newsletter-form__field-wrapper .newsletter-form__message {
+  margin-top: 1.5rem;
+}
+
+.newsletter__button {
+  margin-top: 3rem;
+  width: fit-content;
+}
+.email-signup-banner__box .form__message{
+  justify-content: center;
+  margin-top: 15px;
+}
+.email-signup-banner__heading{
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 15px;
+  margin-top: 30px;
+}
+.newsletter__subheading{
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+.wbemailflex{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin-top: 0;
+}
+@media screen and (min-width: 768px) {
+  .newsletter__button {
+    flex-shrink: 0;
+    margin: 0 0 0 1rem;
+  }
+}
+@media (max-width: 991px) {
+  .newsletter {
+    padding: 30px 0;
+  }
+  .newsletter__wrapper strong {
+    margin-bottom: 0;
+  }
+  .newsletter__wrapper h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+  }
+  .newsletter__subheading {
+    font-size: 12px;
+  }
+  .newsletter-form__field-wrapper .field__button {
+    height: 50px;
+    min-width: 180px;
+    font-size: 16px;
+  }
+  .newsletter-form__field-wrapper .field__label {
+    top: 10px;
+  }
+  .newsletter-form__field-wrapper input {
+    height: 50px;
+    padding: 15px 50px;
+  }
+}
+@media (max-width: 575px) {
+  .newsletter__wrapper p {
+    font-size: 12px;
+    max-width: 280px;
+  }
+  .newsletter__wrapper h2 {
+    font-size: 22px;
+  }
+  .newsletter-form__field-wrapper input {
+    height: 40px;
+    padding: 15px 30px;
+  }
+  .newsletter-form__field-wrapper .field__label {
+    font-size: 13px;
+    left: 20px;
+  }
+  .newsletter-form__field-wrapper .field__button {
+    height: 40px;
+    min-width: 100px;
+    font-size: 14px;
+  }
+  .newsletter-form__field-wrapper .field__button svg {
+    margin-left: 5px;
+    height: 16px;
+    width: 14px;
+  }
+}

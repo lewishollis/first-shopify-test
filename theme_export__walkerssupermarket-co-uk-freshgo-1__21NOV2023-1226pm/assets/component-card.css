@@ -1,0 +1,356 @@
+.card__badge span{
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    margin: 0 auto;
+    display: inline-block;
+    text-transform: uppercase;
+    line-height: normal;
+    font-size: 11px;
+    border: none;
+    background: var(--color-wbmaincolors-text);
+    color: #fff;
+    padding: 0 3px;
+    border-radius: 4px;
+}
+
+.overlay-card {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background: transparent;
+  transition: background-color var(--duration-long) ease;
+}
+
+.allslideprt {
+    flex-wrap: inherit;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    display: flex;
+    text-align: center;
+}
+.wbproduct-container{
+    border-radius: 14px;
+    background-color: #fff;
+    border: 1px solid #e9e9e9;
+}
+.wbproductdes {
+    padding: 10px 0;
+    text-align: left;
+}
+.wbimgblock{
+    position: relative;
+    text-align: center;
+}
+.wbimgblock img{
+    border-radius: 14px 14px 0 0;
+}
+.wbhrating{
+    margin-bottom: 8px;
+    display: inline-block;
+    float: right;
+    padding: 0 10px;
+}
+.wbprotype{
+    font-size: 12px;
+    text-transform: capitalize;
+    background: var(--gradient-base-accent-1);
+    color: var(--color-base-solid-button-labels);
+    padding: 0px 15px;
+    margin-bottom: 8px;
+    font-weight: 500;
+    display: inline-block;
+    border-radius: 10px;
+    margin: 0 10px;
+}
+.product-title{
+    font-size: 1rem;
+    text-transform: capitalize;
+    transition: 0.3s ease;
+    letter-spacing: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 10px 8px 10px;
+    font-weight: 600;
+    margin-bottom: 0;
+    color: var(--color-base-solid-button-labels);
+    clear: both;
+
+}
+.product-title a {
+    color: var(--color-base-solid-button-labels);
+}
+.product-title:hover, .product-title:hover a{ 
+    color: var(--gradient-base-accent-1);
+}    
+.wbhprice{
+    padding: 10px;
+    border-radius: 14px;
+    border-top: 1px solid #e9e9e9;
+}
+.wbnorating.rating-star::before{
+    color: #ddd;
+    background: transparent;
+    -webkit-text-fill-color: #ddd;
+}
+.wbproduct-container .product-form{
+    margin-top: 8px;
+}
+.wbproduct-container .quantity__input{
+    width: 22px;
+    flex-grow: unset;
+    padding: 0;
+    color: var(--color-wbmaincolors-text);
+    height: 26px;
+    vertical-align: top;
+    font-size: 16px;
+}
+.wbproduct-container .quantity{
+    height: 30px;
+    border-radius: 4px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.wbproduct-container .quantity__button{
+    font-size: 12px;
+    display: inline-block;
+    height: 16px;
+    padding: 0 3px;
+    border: 1px solid #83838C;
+    border-radius: 100%;
+  	line-height: 8px;
+}
+.wbproduct-container .quantity__button svg {
+    width: 8px;
+    height: 9px;
+    fill: #83838C;
+}
+.wbproduct-container .product-form__quantity,.wbproduct-container .product-form form{
+    display: inline-block;
+    vertical-align: middle;
+}
+.wbproduct-container .product-form form {
+    width: 80%;
+}
+/*Product Buttons*/
+.wbproduct-container .button-group {
+    display: flex;
+    align-items: center;
+    gap:  10px;
+    padding: 0 10px;
+    justify-content: space-between;
+}
+.wbproduct-container .button-group button.wbquickv {
+    background-color: #DCDCDC;
+    border: none;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 100%;
+    text-align: center;
+    transition: 0.3s ease;
+    padding: 7px 0;
+    min-width: 36px;
+    min-height: 36px;
+    text-transform: capitalize;
+    font-weight: 500;
+    margin: 0;
+}
+.wbproduct-container .button-group button.wbquickv svg{
+    width: 20px;
+    height: 19px;
+    fill: #989898;
+}
+.wbproduct-container .button-group button.wbquickv:hover{
+    background: var(--color-wbmaincolors-text);
+    color: #fff;
+}
+.wbproduct-container .button-group button.wbquickv:hover svg{
+    fill: #fff;
+}
+.wbproduct-container .cartb span{
+    margin-right: 5px;
+}
+.wbproduct-container .cartb svg{
+    width: 20px;
+    height: 19px;
+    fill: var(--color-base-solid-button-labels);
+}
+.wbproduct-container .cartb{
+    border: none;
+    background: var(--gradient-base-accent-1);
+    color: var(--color-base-solid-button-labels);
+    border-radius: 4px;
+    height: 36px;
+    padding: 0 8px;
+    text-transform: capitalize;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+    margin: 0;
+    width: 100%;
+    border-radius: 30px;
+}
+.wbproduct-container .cartb:hover{
+    background-color: var(--color-base-solid-button-labels);
+    color: var(--color-wb-hovercolor-button-text);
+}
+.wbproduct-container .cartb:hover svg {
+    fill: var(--color-wb-hovercolor-button-text);
+}
+.wbproduct-container .cartb[disabled]{
+    cursor: no-drop;
+}
+/*Product Buttons Over */
+/* Home Variants */
+
+.wbproduct-container .inner-class .form__label{
+    font-size: var(--color-base-text);
+}
+.wbproduct-container .product-form__input input[type="radio"] {
+    clip: rect(0,0,0,0);
+    overflow: hidden;
+    position: absolute;
+    height: 1px;
+    width: 1px;
+}
+.wbproduct-container .product-form__input input + label {
+    border-radius: 14px;
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 12px;
+    line-height: 1;
+    text-align: center;
+    transition: border var(--duration-short) ease;
+    cursor: pointer;
+    border: 1px solid #83838c;
+    background: var(--color-background);
+    margin: 0 2px;
+    box-shadow: none;
+}
+.wbproduct-container .product-form__input input + label.active {
+    background-color: var(--gradient-base-accent-1);
+    border-color: var(--gradient-base-accent-1);
+    color: var(--color-base-solid-button-labels);
+    box-shadow: none;
+}
+/* For Color */
+.wbproduct-container .wbswatchclr  input + label{
+    padding: 0;
+    border-radius: 100%;
+    min-width: 12px;
+    min-height: 12px;
+    box-shadow: 0 0px 0px 1px rgba(0,0,0,0.1);
+    border: none;
+    font-size: 0;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+}
+.wbproduct-container .wbswatchclr  input + label.active::before {
+    position: absolute;
+    content: '';
+    box-shadow: 0 0px 0px 1px rgba(0,0,0,1);
+    border-radius: 100%;
+    min-width: 15px;
+    min-height: 15px;
+    left: -2px;
+    padding: 0px;
+    top: -2px;
+    bottom: -2px;
+    right: -2px;
+}
+.pline {
+    border-top: 1px solid #e9e9e9;
+    border-radius: 30px;
+}
+.pro-varient {
+    padding: 0 10px 10px;
+    gap:  10px;
+}
+.pro-var {
+    display: inline-block;
+    vertical-align: middle;
+}
+.wbproduct-container .product-form__quantity {
+    min-width: 62px;
+}
+variant-webi{
+    display: block;
+}
+variant-webi .js.product-form__input.inner-class {
+    margin-bottom: 10px;
+}
+@media (max-width: 1199px) {
+    .wbprotype {
+        padding: 0 6px;
+    }
+}
+@media (max-width: 767px){
+    .wbproduct-container .cartb svg{
+        margin: 0;
+    }
+    .product-title{
+        font-size: 15px;
+        padding: 0 5px 5px;
+    }
+    .wbprotype{
+        margin: 0 5px;
+    }
+    .wbhrating {
+        margin-bottom: 3px;
+        padding: 0 5px;
+    }
+    .wbproductdes {
+        padding: 5px 0 10px;
+    }
+  	.pro-varient {
+        padding: 0 5px 5px;
+    }
+    .wbhprice {
+        padding: 5px;
+    }
+    .wbproduct-container .button-group a {
+        padding: 4px 0;
+        min-width: 30px;
+        min-height: 30px;
+    }
+    .wbproduct-container .cartb {
+        height: 30px;
+    }
+    .wbproduct-container .button-group a svg {
+        width: 18px;
+        height: 17px;
+    }
+    .wbproduct-container .button-group {
+        padding: 0 5px;
+    }
+    .wbproduct-container .quantity {
+        height: 25px;
+    }
+    variant-webi .js.product-form__input.inner-class {
+        margin-bottom: 5px;
+    }
+}
+@media (max-width: 576px) {
+    .wbproduct-container .product-form__quantity {
+        min-width: 58px;
+    }
+    .wbproduct-container .quantity__input {
+        width: 18px;
+        font-size: 14px;
+    }
+    .wbproduct-container .product-form__input input+label {
+        padding: 2px 4px;
+        font-size: 9px;
+        border-radius: 4px;
+    }
+    .pro-varient {
+        gap: 5px;
+    }
+}

@@ -1,0 +1,112 @@
+<link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'component-slider.css' | asset_url | stylesheet_tag }}</noscript>
+
+
+<div class="testimonial">
+  <div class="container">
+    <h2 class="heading text-left"><span>{{ section.settings.m_title }}</span></h2>
+    {% if section.blocks.size > 0 %}
+    <slider-component>
+        <ul class="allslideprt slider testi row rless" id="Slider-testi">
+            {% for block in section.blocks %}
+            <li class="slider__slide list-unstyled col-md-4 col-12 col-sm-6 cless" id="Slide-{{ block.id }}-{{ forloop.index }}">
+                <div class="wbtestisub text-left">
+                    <div class="quote">{% render 'icon-quote' %}</div>
+                    {% if block.settings.quote != blank %}
+                        <p>{{ block.settings.quote }}</p>
+                    {% endif %}
+                    <img loading="lazy" class="img-fluid max-auto" src="{{ block.settings.image | img_url: '25x25' }}" alt="{{ block.settings.image.alt | escape }}">
+                    <div class="testidesc">
+                    {% if block.settings.author != blank %}
+                        <h3>{{ block.settings.author }}</h3>
+                    {% endif %}
+                        <h4>{{ block.settings.developer }}</h4>
+                    </div>
+                </div>
+              </li>
+            {% endfor %}  
+        </ul>
+        {%comment%}<div class="progallerybtn text-center {% if article.media.size < 5 %}hidden{% endif %}">
+                <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="{{ 'general.slider.previous_slide' | t }}" data-step="1">{% render 'icon-caret' %}</button>
+                <button type="button" class="slider-button slider-button--next" name="next" aria-label="{{ 'general.slider.next_slide' | t }}" data-step="1">{% render 'icon-caret' %}</button>
+            </div>{%endcomment%}
+      </slider-component>
+    {% endif %}
+  </div>
+</div>
+
+<style> 
+    .testimonial  { background: linear-gradient(0deg, rgba(255,255,255,1) 30%, {{ section.settings.bg_color }} 30%);}
+</style>
+
+{% schema %}
+  {
+    "name": "Testimonials",
+    "max_blocks": 9,   
+    "settings": [
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background Color",
+        "default": "#f5f5f5"
+      },
+      {
+        "type": "text",
+        "id": "m_title",
+        "label": "Top Heading",
+        "default": "Testimonials"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image",
+        "type": "quote",
+        "name": "Testimonial",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "richtext",
+            "id": "quote",
+            "label": "Text",
+            "default": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>"
+          },
+          {
+            "type": "text",
+            "id": "author",
+            "label": "Author",
+            "default": "Author's name"
+          },
+          {
+            "type": "text",
+            "id": "developer",
+            "label": "field",
+            "default": "developer"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Testimonials",
+        "category": "Text",
+        "blocks": [
+          {
+            "type": "quote"
+          },
+          {
+            "type": "quote"
+          },
+          {
+            "type": "quote"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

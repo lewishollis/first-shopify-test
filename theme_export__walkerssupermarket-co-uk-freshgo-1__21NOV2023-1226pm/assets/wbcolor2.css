@@ -1,0 +1,34 @@
+@charset "UTF-8";
+.announcement-bar{
+	background: #f6bd60 !important;
+}
+.header__icon--search:hover svg, .userdrop:hover svg, .wbhcart:hover svg{
+	fill: #f6bd60;
+	color: #f6bd60;
+}
+.wblbookmain .wblookbook .wblookbtn form,.wblbookmain .wblookbook .wblookbtn form::after {
+    border: 5px solid #f6bd60;
+}
+.product-category2, .product-category2 .heading svg,#Cartcount,.testimonial .wbtestisub,.newsletter-form__field-wrapper .field__button,.deliveryinfo ul,.ptabbr1 li a.nav-link.active, .ptabbr1 li a.nav-link:hover,.toptext a.btn,.wbproduct-container .product-form__input input+label.active,.wbprotype,.pagination__item.pagination__item--current, .pagination__item:hover,.wbrtlmode li a:hover, .wbsitebox li:hover,.mobile-facets__label .icon-checkmark,.facet-checkbox > input[type="checkbox"]:checked ~ .icon-checkmark,.wbproducttab .nav-tabs .nav-item a.active::before,.product__info-container .badge,.slick-slider .slick-arrow:hover,#scroll,.wbproduct-container .cartb,.wbproduct-container .button-group a:hover,.card__badge span,.btn-primary, .button, .customer button, .shopify-challenge__button,.imgbnrtext .btn-primary:hover,.pro-tab .nav-tabs .nav-item .nav-link.active, .pro-tab .nav-tabs .nav-link:hover{
+	background: #f6bd60;
+}
+.newsletter-form__field-wrapper .field__input:focus,.newsletter-form__field-wrapper .field__input:focus~.field__label,.footer__list-social li a,.testimonial .heading,.newsletter-form__field-wrapper .field__label,.newsletter__wrapper h2,.ptabbr2 li a.nav-link.active, .ptabbr2 li a.nav-link:hover,.toptext h2,.wblookdesc h3,.wblookdesc h3 a,.wbaddpg .cless button:hover,.wbrtaddress,.carthead a.underlined-link,.wbsingleblog .tag-section .meta-sep, .wbsingleblog .tag-section a,.wbmainblog .tag-section a,.cart-notification__links .link.button-label:hover,.facet-checkbox:hover,.wbcatsort .product-count,.wbproducttab .nav-tabs .nav-item.show .nav-link, .wbproducttab .nav-tabs .nav-link.active,.product-popup-modal__button,.quickvfull,.copyright__content a:hover, .footblink p a:hover, .footer .footer-collapse li a:hover, .footer__list-social li a:hover,.product-title:hover, .product-title:hover a,a:hover{
+	color: #f6bd60;
+}
+.newsletter-form__field-wrapper input {
+    border: 2px solid #f6bd60;
+}
+.testimonial .wbtestisub .quote {
+    border: 6px solid #f6bd60;
+}
+.testimonial img,.wbproduct-container .product-form__input input+label.active{
+	border-color: #f6bd60;
+}
+.wbcontform li svg,.wblistgridbtn svg:hover, .wblistgridbtn.active svg,.wbfootcont svg,.deliveryinfo ul:hover svg,.wbfootcont svg,
+.testimonial .wbtestisub .quote svg,.footer__list-social li svg{
+	fill: #f6bd60;
+}
+.imgbnrtext .btn-primary{
+	border-color: #f6bd60;
+	color: #f6bd60;
+} 

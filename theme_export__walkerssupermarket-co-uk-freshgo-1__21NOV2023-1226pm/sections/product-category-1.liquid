@@ -1,0 +1,169 @@
+<link rel="stylesheet" href="{{ 'component-slider.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'component-slider.css' | asset_url | stylesheet_tag }}</noscript>
+
+<div class="product-category1">
+    <div class="container">
+        <h2 class="heading text-left"><span>{{ section.settings.m_title }}</span></h2>
+        <slider-component>
+            <ul class="allslideprt ptabbr1 slider row rless" id="Slider-protab">
+                {%- for block in section.blocks -%}
+                    <li class="slider__slide list-unstyled nav-item tab-menu col-2 cless" id="Slide-{{ block.id }}-{{ forloop.index }}">
+                        <a class="nav-link {% if forloop.first %}active{% endif %}" data-toggle="tab" href="#wbprodtab-{{block.id}}" >
+                            <span>{{ block.settings.cat_name }}{%comment%}&nbsp;&nbsp;{% render 'icon-arrow' %}{%endcomment%}</span>
+                        </a>
+                    </li>
+                {%- endfor -%}
+            </ul>
+            {%comment%}<div class="progallerybtn text-center {% if article.media.size < 5 %}hidden{% endif %}">
+                <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="{{ 'general.slider.previous_slide' | t }}" data-step="1">{% render 'icon-caret' %}</button>
+                <button type="button" class="slider-button slider-button--next" name="next" aria-label="{{ 'general.slider.next_slide' | t }}" data-step="1">{% render 'icon-caret' %}</button>
+            </div>{%endcomment%}
+        </slider-component>
+
+            <div class="tab-content">
+                {%- for block in section.blocks -%}
+                {%- assign collection = collections[block.settings.collection]  -%}
+                
+                    <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="wbprodtab-{{block.id}}">
+                        <slider-component>
+                            <ul class="allslideprt slider row rless" id="Slider-{{ section.id }}-{{ block.id }}-ptab" data-autoplay="true" data-speed="2" aria-live="polite">
+                            {% assign num_row = section.settings.num_topr | times: 1 %}
+                            {% assign temp = 0 %}
+                                {% for product in collection.products %}
+                                    {% if temp == 0 %}<li id="Slide-{{ section.id }}-{{ block.id }}-{{ forloop.index }}" class="list-unstyled twopro grid__item col-xl-3 col-lg-4 col-md-4 col-6 cless slider__slide" tabindex="-1">{% endif %}
+                                       
+                                            {% render 'product-card',
+                                            product_card_product: product,
+                                            block_id: block.id,
+                                            show_rating: section.settings.show_rating,
+                                            picker_type: section.settings.picker_type,
+                                            show_variants: section.settings.show_variants,
+                                            show_colorswatch: section.settings.show_colorswatch,
+                                            display_product_type: section.settings.display_product_type  %}
+                                     
+                                    {% assign temp = temp | plus: 1 %}
+                                    {% if temp == num_row %}</li>{% assign temp = 0 %}{% endif %} 
+                                {% else %}
+                                    <div>{{ 'wbcustomlabel.wballtext.catpro' | t }}</div>
+                                {% endfor %} 
+                            </ul>
+
+
+                            {%comment%}<div class="progallerybtn text-center {% if article.media.size < 5 %}hidden{% endif %}">
+                                <button type="button" class="slider-button slider-button--prev" name="previous" aria-label="{{ 'general.slider.previous_slide' | t }}" data-step="1">{% render 'icon-caret' %}</button>
+                                <button type="button" class="slider-button slider-button--next" name="next" aria-label="{{ 'general.slider.next_slide' | t }}" data-step="1">{% render 'icon-caret' %}</button>
+                            </div>{%endcomment%}
+                            <div class="tabvall"> 
+                                <a href="{{ collection.url }}" class="btn allbtn btn-primary">{{ 'sections.featured_collection.view_all' | t }}{% render 'icon-angle-right' %}</a> 
+                            </div>
+                        </slider-component>
+                    </div>
+                {%- endfor -%}
+            </div>
+
+    </div>
+</div>
+<style>
+.product-category,.product-category .heading svg{ background:{{ section.settings.back_color }};}
+</style>
+{% schema %}  
+{
+"name": "Product Category 1",
+"class": "spaced-section",
+"max_blocks": 15,
+"settings": [
+    {
+        "type": "color",
+        "id": "back_color",
+        "label": "Background Color"
+    },
+    {
+        "type": "text",
+        "id": "m_title",
+        "label": "Top Heading",
+        "default": "Categories product"
+    },
+    {
+        "type": "range",
+        "id": "num_topr",
+        "label": "Rows",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 2
+    },
+    {
+        "type": "checkbox",
+        "id": "display_product_type",
+        "label": "Display Product Type?",
+        "default": true
+    },
+    {
+        "type": "checkbox",
+        "id": "show_rating",
+        "default": false,
+        "label": "t:sections.featured-collection.settings.show_rating.label",
+        "info": "t:sections.featured-collection.settings.show_rating.info"
+    },
+    {
+      "type": "header",
+      "content": "Variants"
+    },    
+    {
+      "type": "checkbox",
+      "id": "show_variants",
+      "default": true,
+      "label": "Show color/size variants"
+    },
+    {
+      "type": "select",
+      "id": "picker_type",
+      "options": [
+        {
+          "value": "dropdown",
+          "label": "t:sections.main-product.blocks.variant_picker.settings.picker_type.options__1.label"
+        },
+        {
+          "value": "button",
+          "label": "t:sections.main-product.blocks.variant_picker.settings.picker_type.options__2.label"
+        }
+      ],
+      "default": "button",
+      "label": "t:sections.main-product.blocks.variant_picker.settings.picker_type.label"
+    },
+    {
+        "type": "checkbox",
+        "id": "show_colorswatch",
+        "default": true,
+        "label": "Enable color swatches",
+        "info": "Type set to be 'Pills'. [Learn how to setup swatches](https://www.webibazaar.com/shopify/viola-doc/home#colorswatch)"
+    }
+],
+    "blocks": [
+    {
+    "type": "collection",
+    "name": "Collections",
+    "settings": [
+        {
+            "id": "cat_name",
+            "type": "text",
+            "label": "Category name"
+        },
+        {
+            "id": "collection",
+            "type": "collection",
+            "label": "Collection"
+        }
+    ]
+    }
+],
+"presets": [
+    {
+        "name": "Product Category 1",
+        "category": "Collection",
+        "blocks": [ ]
+    }
+]
+}
+{% endschema %}

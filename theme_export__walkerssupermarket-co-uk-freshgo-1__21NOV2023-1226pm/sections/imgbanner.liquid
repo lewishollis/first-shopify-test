@@ -1,0 +1,103 @@
+<div data-section-id="{{ section.id }}" class="imgbnr">
+  <div class="container">
+    <div class="row rless">
+      {% if section.blocks.size > 0 %}      
+          {% for block in section.blocks %}
+            <div class="col-sm-6 col-12 cless">
+              <div class="beffect">
+                {% if block.settings.link != blank %}<a href="{{ block.settings.link }}">{% endif%}
+                {% if block.settings.image != blank %}
+                <img loading="lazy" src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }}" class="img-fluid mx-auto" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" />
+                {% else %}
+                <img loading="lazy" src="https://dummyimage.com/585x215/f5f5f5" class="img-fluid mx-auto" width="585" height="215" />
+                {% endif%}           
+                {% if block.settings.link != blank %}</a>{% endif%}  
+              </div>
+              <div class="imgtext">
+                <div class="imgff">
+                    {% if block.settings.storytitle != blank %}
+                        <h2 style="color: {{ block.settings.bg_btn_color }};">{{ block.settings.storytitle }}</h2>
+                    {% endif %}
+                    {% if block.settings.storysubtitle != blank %}
+                        <p>{{ block.settings.storysubtitle }}</p>
+                    {% endif %}
+                    {% if block.settings.link != blank %}
+                        <a href="{{ block.settings.link }}" class="btn btn-primary" style="background: {{ block.settings.bg_btn_color }};">{{ block.settings.btn }}{% render 'icon-arrow' %}</a>
+                    {% endif %}
+                </div>
+              </div>
+            </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .imgbnr  { background: linear-gradient(0deg, {{ section.settings.bg_color }} 60%,rgba(255,255,255,1) 30%);}
+</style>
+
+{% schema %}
+{
+"name": "Image Banner",
+"class": "spaced-section",
+"max_blocks": 2,  
+"settings": [
+    {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background Color",
+        "default": "#f5f5f5"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Image",
+      "name": "Image Banner",
+      "settings": [ 
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Size: 585x215"
+        },
+        {
+          "type": "text",
+          "id": "storytitle",
+          "label": "Heading",
+          "default": "New Shoes"
+        },
+        {
+          "type": "text",
+          "id": "storysubtitle",
+          "label": "Sub Heading",
+          "default": "SPRING - SUMMER 2021"
+        },
+        {
+          "type": "text",
+          "id": "btn",
+          "label": "Button",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL"
+        },
+        {
+          "type": "color",
+          "id": "bg_btn_color",
+          "default": "#fff",
+          "label": "Button Bg Color"
+        }  
+      ]
+    }
+  ],
+"presets": [
+    {
+      "name": "Image Banner",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}    

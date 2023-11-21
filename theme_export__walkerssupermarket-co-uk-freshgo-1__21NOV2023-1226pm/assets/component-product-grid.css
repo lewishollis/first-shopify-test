@@ -1,0 +1,109 @@
+.collection-header {
+    padding: 10px;
+    margin-bottom: 30px;
+}
+#product-grid .grid__item {
+    margin-bottom: 30px;
+}
+.product-list .grid__item {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+.product-list .wbproduct-container{
+    float: left;
+    width: 100%;
+    display: block;
+}
+.product-list .wbimgblock{
+    float: left;
+    width: 30%;
+}
+.product-list .wbproductdes {
+    float: left;
+    width: 70%;
+    text-align: left;
+}
+.product-list .pro-varient {
+    padding: 0 10px;
+    /*justify-content: unset !important;*/
+}
+.product-list .wbproduct-container .wbhprice {
+    border:  none;
+    padding: 0 10px 10px;
+}
+.product-list .wbproduct-container .button-group {
+    justify-content: unset;
+}
+.product-list .wbproduct-container .product-form form {
+    width: auto;
+}
+#product-grid.product-grid .wblistpdesc{
+    display: none;
+}
+
+.wblistpdesc{
+    margin: 0 10px 5px 10px;
+    font-size: 13px;
+}
+.collection-hero{
+    margin-bottom: 0px;
+}
+@media (min-width: 768px){
+    /*.product-list .wbproduct-container .button-group{
+        display: inline-block;
+    }*/
+}
+@media (min-width: 1200px) and (max-width: 1409px){
+    .wblistpdesc{
+        letter-spacing: 0;
+    }
+}
+@media (min-width: 768px) and (max-width: 991px){
+    .product-list .wbimgblock,.product-list .wbproductdes{
+        width: 50%;
+    }
+    .wblistpdesc{
+        letter-spacing: 0;
+        overflow: hidden;
+        height: 40px;
+    }
+}
+@media (max-width: 991px){
+    #product-grid .grid__item{
+        margin-bottom: 10px;
+    }
+}
+@media (min-width: 576px) and (max-width: 767px){
+    .product-list .wbimgblock{
+        width: 40%;
+    }
+    .product-list .wbproductdes{
+        width: 60%;
+    }
+    .wblistpdesc{
+        letter-spacing: 0;
+        overflow: hidden;
+        height: 40px;
+    }
+}
+@media (max-width: 575px){
+    .product-list .wbimgblock,.product-list .wbproductdes{
+        width: 100%;
+    }
+    .wblistpdesc{
+        overflow: hidden;
+        height: 40px;
+    }
+}
+@media (max-width: 767px){
+    .collection-hero__image-container{
+        margin-bottom: 10px;
+        text-align: center;
+    }
+}
+@media (min-width: 400px) and (max-width: 575px){
+    .product-list .grid__item{
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
